@@ -1,0 +1,155 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:decorate template="./template.xhtml">
+        <ui:define name="centro">
+
+            <h:form>
+                <p:tabView prependId="false"> <!--cadastro-->
+
+
+                    <p:tab title="Cadastro" >
+                        <h3>Cadastro de Títulos</h3>
+
+                        <p:messages id="msgCadastro" showDetail="true" autoUpdate="true" closable="false" />
+
+                        <h:panelGrid id="gridCad" columns="2">
+                            <p:outputLabel for="tituloCad"  value="Título:"/>
+                            <p:inputText id="tituloCad" value="#{tituloController.titulo.titulo}" />
+
+                            <p:outputLabel for="autorCad"  value="Autor:"/>
+                            <p:inputText id="autorCad" value="#{tituloController.titulo.autor}" />
+
+                            <f:facet name="footer">
+                                <p:commandButton value="Cadastrar"
+                                                 
+                                                 action="#{tituloController.cadastraTitulo()}"
+                                                 update="tabTitulo msgCadastro" />
+                            </f:facet>
+                        </h:panelGrid>
+
+                        <p:dataTable id="tabTitulo"
+                                     var="titulo" 
+                                     value="#{tituloController.listaTitulos}"
+                                     paginator="true"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rows="5"
+                                     rowsPerPageTemplate="5,10,15">
+                            <p:column headerText="Id">
+                                <h:outputText value="#{titulo.id}" />
+                            </p:column>
+
+                            <p:column headerText="Título">
+                                <h:outputText value="#{titulo.titulo}" />
+                            </p:column>
+
+                            <p:column headerText="Autor">
+                                <h:outputText value="#{titulo.autor}" />
+                            </p:column>
+                        </p:dataTable>
+
+
+
+
+                    </p:tab><!--Pesquisa-->
+
+
+
+                    <p:tab title="Pesquisa">
+
+                        <p:messages id="msgPesquisa" showDetail="true" autoUpdate="true" closable="false" />
+                        <h:panelGrid id="gridPesquisa" columns="2">
+                            <p:outputLabel for="id"  value="Id"/>
+                            <p:inputText id="id" value="#{tituloController.codPesquisa}" />                    
+                            <p:outputLabel for="titulo"  value="Título:"/>
+                            <p:inputText id="titulo" value="#{tituloController.tituloPesquisa}" />
+                            <p:outputLabel for="autor"  value="Autor:"/>
+                            <p:inputText id="autor" value="#{tituloController.autorPesquisa}" />
+                            <f:facet name="footer">
+                                <p:commandButton value="Pesquisar"
+                                                 process="gridPesquisa"
+                                                 action="#{tituloController.pesquisaTitulo()}"
+                                                 update="tabPesquisa" />
+                            </f:facet>
+                        </h:panelGrid>
+
+                        <p:dataTable id="tabPesquisa" var="tituloPesq" value="#{tituloController.listaTitulosPesquisa}">
+                            <p:column headerText="Id">
+                                <h:outputText value="#{tituloPesq.id}" />
+                            </p:column>    
+                            <p:column headerText="Título">
+                                <h:outputText value="#{tituloPesq.titulo}" />
+                            </p:column>
+                            <p:column headerText="Autor">
+                                <h:outputText value="#{tituloPesq.autor}" />
+                            </p:column>
+
+                            <p:column headerText="Ações" style="text-align:center;"> 
+                                <p:commandButton 
+                                    title="Editar" 
+                                    icon="ui-icon-pencil"
+                                    update="@this"
+                                    process="tabPesquisa"
+                                    oncomplete="PF('dlgEditar').show()">
+                                    <f:setPropertyActionListener 
+                                        value="#{tituloPesq}"
+                                        target="#{tituloController.tituloSelecionado}" />
+                                </p:commandButton>                               
+
+
+                                <p:commandButton 
+                                    title="Remover" 
+                                    icon="ui-icon-trash"
+                                    update="@form" 
+                                    process="tabPesquisa"
+                                    action="#{tituloController.removeTitulo()}">
+                                    <p:confirm header="Remover registro"
+                                               message="Deseja realmente remover o registro?"
+                                               icon="ui-icon-alert" />
+                                    <f:setPropertyActionListener 
+                                        value="#{tituloPesq}"
+                                        target="#{tituloController.tituloSelecionado}" />
+                                </p:commandButton>
+                            </p:column> 
+                        </p:dataTable>
+
+                        <p:dialog  header="Editar" widgetVar="dlgEditar">
+                            <h:panelGrid id="gridUpdate" columns="2" rendered="#{not empty tituloController.tituloSelecionado}">
+                                <p:outputLabel for="tituloUpdate"  value="Título:"/>
+                                <p:inputText id="tituloUpdate" value="#{tituloController.tituloSelecionado.titulo}" />
+                                <p:outputLabel for="autorUpdate"  value="Autor:"/>
+                                <p:inputText id="autorUpdate" value="#{tituloController.tituloSelecionado.autor}" />
+
+                                <f:facet name="footer">
+                                    <p:commandButton value="Atualizar"
+                                                     action="#{tituloController.atualizaTitulo()}"
+                                                     process="gridUpdate"
+                                                     update="@form"
+                                                     oncomplete="PF('dlgEditar').hide();"/>
+                                </f:facet>
+                            </h:panelGrid>
+                        </p:dialog>
+
+
+                        <p:confirmDialog global="true">
+                            <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                            <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                        </p:confirmDialog>
+
+
+                    </p:tab><!--Pesquisa-->
+
+
+                </p:tabView>
+            </h:form>
+        </ui:define>
+    </ui:decorate>
+
+
+
+</html>
+

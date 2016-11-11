@@ -1,0 +1,60 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+            <title>Biblioteca</title>
+        </h:head>
+
+        <h:body>
+
+            <p:layout id="allLayout" fullPage="true" style="min-width:400px;min-height:200px;">
+                <p:layoutUnit position="north" resizable="true" size="100" minSize="40" maxSize="200">
+                            <h1>Biblioteca</h1>
+                </p:layoutUnit>
+
+
+
+                <p:layoutUnit position="west" resizable="true" size="240" minSize="40" maxSize="250">
+                    <h:form>
+
+                        <p:panelMenu style="width:300px" >
+
+                            <p:submenu label="Cadastros" icon="ui-icon-refresh">
+                                <p:menuitem value="Título" outcome="titulos"></p:menuitem>
+                                <p:menuitem value="Exemplar" outcome="exemplares"></p:menuitem>
+
+                            </p:submenu>
+
+                            <p:submenu label="Empréstimos" icon="ui-icon-newwin">
+
+                            </p:submenu>
+
+                        </p:panelMenu>      
+                    </h:form>
+                </p:layoutUnit> <!--Lateral com Menu-->
+                 
+
+
+
+
+                <p:layoutUnit position="center">
+                    <ui:insert name="centro">
+                        Bliblioteca
+                    </ui:insert>
+
+                    <p:separator/>
+                    <h:form id="bt">
+                        <p:commandButton value="Voltar" action="index?faces-redirect=true" />
+                    </h:form>
+                </p:layoutUnit>
+            </p:layout>
+
+        </h:body>
+    </f:view>
+</html>
+

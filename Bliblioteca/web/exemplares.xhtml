@@ -1,0 +1,36 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:decorate template="template.xhtml">
+        <ui:define name="centro">
+
+            <h:form>
+
+                <p:messages id="msg" showDetail="true" autoUpdate="true" closable="false" />
+
+                <h:panelGrid columns="2">
+                    <p:outputLabel for="tituloId" value="Código Título:" />
+                    <p:inputText id="tituloId" value="#{exemplarController.tituloId}" />
+
+                    <f:facet name="footer">
+                        <p:commandButton value="Pesquisar"
+                                         action="#{exemplarController.pesquisaTitulo()}"
+                                         update="@form" />
+                    </f:facet>
+
+                </h:panelGrid>
+
+               
+
+            </h:form>
+        </ui:define>
+    </ui:decorate>
+
+
+
+</html>
+
