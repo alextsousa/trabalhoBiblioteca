@@ -6,11 +6,13 @@
 package model;
 
 import java.io.Serializable;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
@@ -25,10 +27,7 @@ import org.hibernate.validator.constraints.Length;
 @Entity
 @Table(name="titulos")
 public class Titulo implements Serializable{
-    
-    //@OneToMany(mappedBy = "exemplares")
-    //public Set<Exemplar> exemplares;
-    
+     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -42,6 +41,9 @@ public class Titulo implements Serializable{
     @NotNull(message="Campo 'autor' é obrigatório.")
     @Length(min=5, max=50, message="autor deve conter entre {min} e {max} caracteres.")
     private String autor;
+    
+    @OneToMany(mappedBy="titulo")
+    public Set<Exemplar> exemplares;
 
     public Integer getId() {
         return id;

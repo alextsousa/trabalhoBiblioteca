@@ -13,6 +13,7 @@
     
     <mapping class="model.Titulo"/>
     <mapping class="model.Exemplar"/>
+    <mapping class="model.Usuario"/>
     
   </session-factory>
 </hibernate-configuration>

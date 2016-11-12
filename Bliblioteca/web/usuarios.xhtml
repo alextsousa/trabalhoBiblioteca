@@ -8,138 +8,153 @@
     <ui:decorate template="./template.xhtml">
         <ui:define name="centro">
 
+            <h:form>
+                <p:tabView prependId="false"> <!--cadastro-->
 
-            <p:tabView> <!--cadastro-->
 
+                    <p:tab title="Cadastro" >
+                        <h3>Cadastro de </h3>
 
-                <p:tab title="Cadastro">
-                    <h:form id="cadTitulo">
                         <p:messages id="msgCadastro" showDetail="true" autoUpdate="true" closable="false" />
 
-                        <h:panelGrid columns="2">
-                            <p:outputLabel for="titulo"  value="Título:"/>
-                            <p:inputText id="titulo" value="#{tituloController.titulo.titulo}" />
+                        <h:panelGrid id="gridCad" columns="2">
+                            <p:outputLabel for="nomeCad"  value="Nome:"/>
+                            <p:inputText id="nomeCad" value="#{usuarioController.usuario.nome}" />
 
-                            <p:outputLabel for="autor"  value="Autor:"/>
-                            <p:inputText id="autor" value="#{tituloController.titulo.autor}" />
+                            <p:outputLabel for="emailCad"  value="Autor:"/>
+                            <p:inputText id="emailCad" value="#{usuarioController.usuario.email}" />
 
                             <f:facet name="footer">
                                 <p:commandButton value="Cadastrar"
-
-                                                 action="#{tituloController.cadastraTitulo()}"
-                                                 update="cadTitulo" />
+                                                 
+                                                 action="#{usuarioController.cadastra()}"
+                                                 update="tabUsuario msgCadastro" />
                             </f:facet>
                         </h:panelGrid>
 
-                        <p:dataTable id="tabTitulo"
-                                     var="titulo" 
-                                     value="#{tituloController.listaTitulos}"
+                        <p:dataTable id="tabUsuario"
+                                     var="usuario" 
+                                     value="#{usuarioController.listaUsuarios}"
                                      paginator="true"
                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                      rows="5"
                                      rowsPerPageTemplate="5,10,15">
                             <p:column headerText="Id">
-                                <h:outputText value="#{titulo.id}" />
+                                <h:outputText value="#{usuario.id}" />
                             </p:column>
 
-                            <p:column headerText="Título">
-                                <h:outputText value="#{titulo.titulo}" />
+                            <p:column headerText="Nome">
+                                <h:outputText value="#{usuario.nome}" />
                             </p:column>
 
-                            <p:column headerText="Autor">
-                                <h:outputText value="#{titulo.autor}" />
+                            <p:column headerText="Email">
+                                <h:outputText value="#{usuario.email}" />
                             </p:column>
                         </p:dataTable>
 
 
-                    </h:form>
-
-                </p:tab><!--Pesquisa-->
 
 
-
-                <p:tab title="Pesquisa">
-                    <h:form id="cadPesquisa">
-                        <p:messages id="msgPesquisa" showDetail="true" autoUpdate="true" closable="false" />
-                        <h:panelGrid columns="2">
-                            <p:outputLabel for="id"  value="Id"/>
-                            <p:inputText id="id" value="#{tituloController.codPesquisa}" />                    
-                            <p:outputLabel for="titulo"  value="Título:"/>
-                            <p:inputText id="titulo" value="#{tituloController.tituloPesquisa}" />
-                            <p:outputLabel for="autor"  value="Autor:"/>
-                            <p:inputText id="autor" value="#{tituloController.autorPesquisa}" />
-                            <f:facet name="footer">
-                                <p:commandButton value="Pesquisar"
-                                                 action="#{tituloController.pesquisaTitulo()}"
-                                                 update="tabPesquisa" />
-                            </f:facet>
-                        </h:panelGrid>
-
-                        <p:dataTable id="tabPesquisa" var="tituloPesq" value="#{tituloController.listaTitulosPesquisa}">
-                            <p:column headerText="Id">
-                                <h:outputText value="#{tituloPesq.id}" />
-                            </p:column>    
-                            <p:column headerText="Título">
-                                <h:outputText value="#{tituloPesq.titulo}" />
-                            </p:column>
-                            <p:column headerText="Autor">
-                                <h:outputText value="#{tituloPesq.autor}" />
-                            </p:column>
-                            <p:column headerText="Ações" style="text-align:center;"> 
-                                <p:commandButton 
-                                    title="Editar" 
-                                    icon="ui-icon-pencil"
-                                    update="@form"
-                                    oncomplete="PF('dlgEditar').show()">
-                                    <f:setPropertyActionListener 
-                                        value="#{tituloPesq}"
-                                        target="#{tituloController.tituloSelecionado}" />
-                                </p:commandButton>                               
+                    </p:tab><!--Pesquisa-->
 
 
-                                <p:commandButton 
-                                    title="Remover" 
-                                    icon="ui-icon-trash"
-                                    update="@form"
-                                    action="#{tituloController.removeTitulo()}">
-                                    <p:confirm header="Remover registro"
-                                               message="Deseja realmente remover o registro?"
-                                               icon="ui-icon-alert" />
-                                    <f:setPropertyActionListener 
-                                        value="#{tituloPesq}"
-                                        target="#{tituloController.tituloSelecionado}" />
-                                </p:commandButton>
-                            </p:column> 
-                        </p:dataTable>
 
-                        <p:dialog header="Editar" widgetVar="dlgEditar">
+                    <p:tab title="Pesquisa">
 
-                            <h:panelGrid columns="2" rendered="true">
-                                <p:outputLabel for="tituloUpdate"  value="Título:"/>
-                                <p:inputText id="tituloUpdate" value="#{tituloController.tituloSelecionado.titulo}" />
-                                <p:outputLabel for="autorUpdate"  value="Autor:"/>
-                                <p:inputText id="autorUpdate" value="#{tituloController.tituloSelecionado.autor}" />
+                        <p:dialog  header="Editar" widgetVar="dlgEditar">
+                            <h:panelGrid id="gridUpdate" columns="2" rendered="#{not empty tituloController.tituloSelecionado}">
+                                
+                                <p:outputLabel for="nomeUpdate"  value="Nome:"/>
+                                <p:inputText id="nomeUpdate" value="#{usuarioController.usuarioSelecionado.nome}" />
+                                
+                                <p:outputLabel for="emailUpdate"  value="Email:"/>
+                                <p:inputText id="emailUpdate" value="#{usuarioController.usuarioSelecionado.email}" />
 
                                 <f:facet name="footer">
                                     <p:commandButton value="Atualizar"
-                                                     action="#{tituloController.atualizaTitulo()}"
-                                                     update="cadPesquisa"
+                                                     action="#{usuarioController.atualiza()}"
+                                                     process="gridUpdate"
+                                                     update="@form"
                                                      oncomplete="PF('dlgEditar').hide();"/>
                                 </f:facet>
                             </h:panelGrid>
                         </p:dialog>
+
 
                         <p:confirmDialog global="true">
                             <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
                             <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
                         </p:confirmDialog>
 
-                    </h:form>  
-                </p:tab><!--Pesquisa-->
+                        
+                        <p:messages id="msgPesquisa" showDetail="true" autoUpdate="true" closable="false" />
+                        
+                        <h:panelGrid id="gridPesquisa" columns="2">
+                            
+                            <p:outputLabel for="id"  value="Id"/>
+                            <p:inputText id="id" value="#{usuarioController.codPesquisa}" />                    
+                            
+                            <p:outputLabel for="nome"  value="Nome:"/>
+                            <p:inputText id="nome" value="#{usuarioController.nomePesquisa}" />
+                            
+                            <p:outputLabel for="email"  value="Email:"/>
+                            <p:inputText id="email" value="#{usuarioController.emailPesquisa}" />
+                            
+                            <f:facet name="footer">
+                                <p:commandButton value="Pesquisar"
+                                                 process="gridPesquisa"
+                                                 action="#{usuarioController.pesquisa()}"
+                                                 update="tabPesquisa" />
+                            </f:facet>
+                        </h:panelGrid>
+
+                        <p:dataTable id="tabPesquisa" var="usuarioPesq" value="#{usuarioController.listaUsuariosPesquisa}">
+                            <p:column headerText="Id">
+                                <h:outputText value="#{usuarioPesq.id}" />
+                            </p:column>    
+                            <p:column headerText="Nome">
+                                <h:outputText value="#{usuarioPesq.nome}" />
+                            </p:column>
+                            <p:column headerText="Email">
+                                <h:outputText value="#{usuarioPesq.email}" />
+                            </p:column>
+
+                            <p:column headerText="Ações" style="text-align:center;"> 
+                                <p:commandButton 
+                                    title="Editar" 
+                                    icon="ui-icon-pencil"
+                                    update="@this"
+                                    process="tabPesquisa"
+                                    oncomplete="PF('dlgEditar').show()">
+                                    <f:setPropertyActionListener 
+                                        value="#{usuarioPesq}"
+                                        target="#{usuarioController.usuarioSelecionado}" />
+                                </p:commandButton>                               
 
 
-            </p:tabView>
+                                <p:commandButton 
+                                    title="Remover" 
+                                    icon="ui-icon-trash"
+                                    update="@form" 
+                                    process="tabPesquisa"
+                                    action="#{usuarioController.remove()}">
+                                    <p:confirm header="Remover registro"
+                                               message="Deseja realmente remover o registro?"
+                                               icon="ui-icon-alert" />
+                                    <f:setPropertyActionListener 
+                                        value="#{usuarioPesq}"
+                                        target="#{usuarioController.usuarioSelecionado}" />
+                                </p:commandButton>
+                            </p:column> 
+                        </p:dataTable>
 
+                        
+
+                    </p:tab><!--Pesquisa-->
+
+
+                </p:tabView>
+            </h:form>
         </ui:define>
     </ui:decorate>
 

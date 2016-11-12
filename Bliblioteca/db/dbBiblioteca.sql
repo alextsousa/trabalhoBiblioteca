@@ -22,7 +22,7 @@ create table exemplares (
     titulo_id integer references titulos(id)
 );
 
-create table usuario(
+create table usuarios(
     id serial primary key,
     nome varchar(50),
     email varchar(50)

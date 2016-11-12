@@ -8,13 +8,13 @@
     <ui:decorate template="template.xhtml">
         <ui:define name="centro">
 
-            <h:form>
+            <h:form id="exemplar">
 
                 <p:messages id="msg" showDetail="true" autoUpdate="true" closable="false" />
 
                 <h:panelGrid columns="2">
-                    <p:outputLabel for="tituloId" value="Código Título:" />
-                    <p:inputText id="tituloId" value="#{exemplarController.tituloId}" />
+                    <p:outputLabel for="nome" value="Nome:" />
+                    <p:inputText id="nome" value="#{exemplarController.titulo.id}" />
 
                     <f:facet name="footer">
                         <p:commandButton value="Pesquisar"
@@ -23,8 +23,50 @@
                     </f:facet>
 
                 </h:panelGrid>
+                <h:outputLabel for="titulo" value="Título: "/>
+                <h:inputText id="titulo" disabled="true" value="#{exemplarController.titulo.titulo}"/>
 
-               
+
+
+                <h:panelGrid id="cadastro">
+                    <p:outputLabel for="dtCad" value="Data do Cadastro:" />
+                    <p:inputText id="dtCad" value="#{exemplarController.dataCad}">
+                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                    </p:inputText>
+
+                    <f:facet name="footer">
+                        <p:commandButton value="Cadastrar"
+                                         action="#{exemplarController.cadastra()}"
+                                         update="msg exemplares"/>
+                    </f:facet>
+
+                </h:panelGrid>
+
+                <p:dataTable id="exemplares"
+                             value="#{exemplarController.listaExemplares}"
+                             var="exemplares">
+                    <p:column headerText="Código">
+                        <h:outputText value="#{exemplares.id}"/>
+                    </p:column>
+
+                    <p:column headerText="Título">
+                        <h:outputText value="#{exemplares.titulo.titulo}"/>
+                    </p:column>
+
+                    <p:column headerText="Data Cadastro">
+                        <h:outputText value="#{exemplares.dataCad}">
+                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                        </h:outputText>
+                    </p:column>
+
+
+                    <p:column headerText="Status">
+                        <h:outputText rendered="#{exemplares.status}" value="Disponível"/>
+                        <h:outputText rendered="#{!exemplares.status}" value="Emprestado"/>
+                    </p:column>
+
+                </p:dataTable>
+
 
             </h:form>
         </ui:define>

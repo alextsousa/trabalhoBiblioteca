@@ -31,7 +31,7 @@ public class Exemplar implements Serializable {
     private Integer id;
     
     @Column(name="status")
-    private boolean status;
+    private boolean status = true;
     
     @Column(name="dataCad")
     @Temporal(javax.persistence.TemporalType.DATE)
@@ -39,8 +39,8 @@ public class Exemplar implements Serializable {
     private Date dataCad;
     
     @ManyToOne
-    @JoinColumn(name = "titulo_id")
-    private int tituloId;
+    @JoinColumn(name="titulo_id")
+    private Titulo titulo;
 
     public Integer getId() {
         return id;
@@ -66,13 +66,17 @@ public class Exemplar implements Serializable {
         this.dataCad = dataCad;
     }
 
-    public int getTituloId() {
-        return tituloId;
+    public Titulo getTitulo() {
+        return titulo;
     }
 
-    public void setTituloId(int tituloId) {
-        this.tituloId = tituloId;
+    public void setTitulo(Titulo titulo) {
+        this.titulo = titulo;
     }
+
+   
+    
+   
      
     
 }
