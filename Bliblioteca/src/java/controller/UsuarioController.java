@@ -16,6 +16,8 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import model.Usuario;
+import org.primefaces.component.tabview.TabView;
+import org.primefaces.event.TabChangeEvent;
 
 /**
  *
@@ -32,8 +34,10 @@ public class UsuarioController implements Serializable {
     private Integer codPesquisa;
     private String nomePesquisa;
     private String emailPesquisa;
-    
+
     private List<Usuario> listaUsuariosPesquisa;
+
+    private Integer tabAtiva = 0;
 
     @ManagedProperty("#{usuarioDao}")
     private UsuarioDao usuarioDao;
@@ -41,7 +45,7 @@ public class UsuarioController implements Serializable {
     @PostConstruct
     public void init() {
         usuario = new Usuario();
-        listaUsuarios= usuarioDao.listaTodos();
+        listaUsuarios = usuarioDao.listaTodos();
         listaUsuariosPesquisa = new ArrayList<>();
     }
 
@@ -59,8 +63,7 @@ public class UsuarioController implements Serializable {
     }
 
     public void pesquisa() {
-        
-      
+
         if ((codPesquisa == null) && (nomePesquisa.isEmpty()) && (emailPesquisa.isEmpty())) {
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_ERROR,
@@ -97,6 +100,11 @@ public class UsuarioController implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Info!", "Registro removido com sucesso!"));
         } catch (Exception e) {
         }
+    }
+
+    public void onTabChange(TabChangeEvent event) {
+        TabView tv = (TabView) event.getComponent();
+        tabAtiva = tv.getActiveIndex();
     }
 
     public List<Usuario> getListaUsuarios() {
@@ -163,5 +171,12 @@ public class UsuarioController implements Serializable {
         this.usuarioDao = usuarioDao;
     }
 
-    
+    public Integer getTabAtiva() {
+        return tabAtiva;
+    }
+
+    public void setTabAtiva(Integer tabAtiva) {
+        this.tabAtiva = tabAtiva;
+    }
+
 }

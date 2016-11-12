@@ -10,7 +10,7 @@
 
             <h:form>
                 <p:tabView prependId="false"> <!--cadastro-->
-
+                    <p:ajax event="tabChange" listener="#{usuarioController.onTabChange}" />
 
                     <p:tab title="Cadastro" >
                         <h3>Cadastro de </h3>
@@ -26,7 +26,7 @@
 
                             <f:facet name="footer">
                                 <p:commandButton value="Cadastrar"
-                                                 
+
                                                  action="#{usuarioController.cadastra()}"
                                                  update="tabUsuario msgCadastro" />
                             </f:facet>
@@ -62,11 +62,11 @@
                     <p:tab title="Pesquisa">
 
                         <p:dialog  header="Editar" widgetVar="dlgEditar">
-                            <h:panelGrid id="gridUpdate" columns="2" rendered="#{not empty tituloController.tituloSelecionado}">
-                                
+                            <h:panelGrid id="gridUpdate" columns="2" rendered="true">
+
                                 <p:outputLabel for="nomeUpdate"  value="Nome:"/>
                                 <p:inputText id="nomeUpdate" value="#{usuarioController.usuarioSelecionado.nome}" />
-                                
+
                                 <p:outputLabel for="emailUpdate"  value="Email:"/>
                                 <p:inputText id="emailUpdate" value="#{usuarioController.usuarioSelecionado.email}" />
 
@@ -86,20 +86,20 @@
                             <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
                         </p:confirmDialog>
 
-                        
+
                         <p:messages id="msgPesquisa" showDetail="true" autoUpdate="true" closable="false" />
-                        
+
                         <h:panelGrid id="gridPesquisa" columns="2">
-                            
+
                             <p:outputLabel for="id"  value="Id"/>
                             <p:inputText id="id" value="#{usuarioController.codPesquisa}" />                    
-                            
+
                             <p:outputLabel for="nome"  value="Nome:"/>
                             <p:inputText id="nome" value="#{usuarioController.nomePesquisa}" />
-                            
+
                             <p:outputLabel for="email"  value="Email:"/>
                             <p:inputText id="email" value="#{usuarioController.emailPesquisa}" />
-                            
+
                             <f:facet name="footer">
                                 <p:commandButton value="Pesquisar"
                                                  process="gridPesquisa"
@@ -123,7 +123,7 @@
                                 <p:commandButton 
                                     title="Editar" 
                                     icon="ui-icon-pencil"
-                                    update="@this"
+                                    update="@form"
                                     process="tabPesquisa"
                                     oncomplete="PF('dlgEditar').show()">
                                     <f:setPropertyActionListener 
@@ -148,7 +148,7 @@
                             </p:column> 
                         </p:dataTable>
 
-                        
+
 
                     </p:tab><!--Pesquisa-->
 
