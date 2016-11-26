@@ -102,7 +102,7 @@ public class TituloDao implements Serializable{
         
         try {
             t = session.beginTransaction();
-            Query query = session.createQuery("from Titulo where nome like :titulo");
+            Query query = session.createQuery("from Titulo where titulo like :titulo");
             query.setParameter("titulo", String.format("%%%s%%", tituloPesquisa));
             lista = query.list();
             t.commit();
@@ -125,7 +125,7 @@ public class TituloDao implements Serializable{
         
         try {
             t = session.beginTransaction();
-            Query query = session.createQuery("from Titulo where nome like :autor");
+            Query query = session.createQuery("from Titulo where autor like :autor");
             query.setParameter("autor", String.format("%%%s%%", autorPesquisa));
             lista = query.list();
             t.commit();

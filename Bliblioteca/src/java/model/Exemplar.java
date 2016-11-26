@@ -41,7 +41,10 @@ public class Exemplar implements Serializable {
     @ManyToOne
     @JoinColumn(name="titulo_id")
     private Titulo titulo;
-
+    
+    
+    
+    
     public Integer getId() {
         return id;
     }

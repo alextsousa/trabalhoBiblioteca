@@ -29,3 +29,12 @@ create table usuarios(
 );
 
 
+create table emprestimos(
+    id serial primary key,
+    dataemp timestamp,
+    status boolean,
+    exemplar_id integer references exemplares(id),
+    usuario_id integer references usuarios(id)
+    
+);
+

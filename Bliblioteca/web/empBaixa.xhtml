@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:decorate template="template.xhtml">
+        <ui:define name="centro">
+            <h:form>
+                <p:panel id="pbaixa">
+                    <h3>Baixa de Emprestimos</h3>
+                    <p:messages id="msgbaixa" showDetail="true" autoUpdate="true" closable="false" />
+                    <h:panelGrid id="gBaixa" columns="2">
+
+                        <p:outputLabel for="idPesq" value="Código:"/>
+                        <p:inputText id="idPesq" value="#{emprestimoController.idUsuPesq}"/>
+
+                        <p:outputLabel for="usuarioPesq" value="Nome:"/>
+                        <p:inputText id="usuarioPesq" value="#{emprestimoController.usuPesq}"/>
+
+                        <p:outputLabel for="emailPesq" value="Título:"/>
+                        <p:inputText id="emailPesq" value="#{emprestimoController.titPesq}"/>
+
+                        <p:outputLabel for="dtIni" value="Dt.Inicial" />
+                        <p:calendar pattern="dd/mm/yyyy" locale="pt_BR" id="dtIni" value="#{emprestimoController.dtInicial}" >
+                            
+                        </p:calendar>
+                            
+                        <p:outputLabel for="dtFinal" value="Dt.Final" />
+                        <p:calendar pattern="dd/mm/yyyy" locale="pt_BR" id="dtFinal" value="#{emprestimoController.dtFinal}">
+                            
+                        </p:calendar>
+
+                        <f:facet name="footer">
+                            <p:commandButton value="Pesquisar"
+                                             update="@form"
+                                             action="#{emprestimoController.pesquisaEmprestimo()}"/>
+                        </f:facet>
+
+                    </h:panelGrid>
+
+                    <p:dataTable id="tabBaixa" 
+                                 value="#{emprestimoController.listaEmprestimos}" 
+                                 var="empBaixa">
+                        <p:column headerText="Id" width="10%">
+                            <p:outputLabel value="#{empBaixa.id}"/>
+                        </p:column>
+
+                        <p:column headerText="Data emp.">
+                            <p:outputLabel value="#{empBaixa.dataemp}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </p:outputLabel>
+
+                        </p:column>
+
+                        <p:column headerText="Usuário">
+                            <p:outputLabel value="#{empBaixa.usuario.nome}"/>
+                        </p:column>
+
+                        <p:column headerText="Usuário">
+                            <p:outputLabel value="#{empBaixa.exemplar.titulo.titulo}"/>
+                        </p:column>
+
+
+                        <p:column headerText="Baixar" width="5%">
+                            <p:commandButton 
+                                title="Baixar" 
+                                icon="ui-icon-check"
+                                update="@form"
+                                process="tabBaixa"
+                                action="#{emprestimoController.pag1()}">
+                                <f:setPropertyActionListener 
+                                    value="#{empBaixa}"
+                                    target="#{emprestimoController.emprestimoSelecionado}" />
+                            </p:commandButton>
+                        </p:column>
+
+                    </p:dataTable>
+                </p:panel>
+
+                
+            </h:form>
+        </ui:define>
+    </ui:decorate>
+
+
+
+</html>
+

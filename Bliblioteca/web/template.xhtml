@@ -14,7 +14,7 @@
 
             <p:layout id="allLayout" fullPage="true" style="min-width:400px;min-height:200px;">
                 <p:layoutUnit position="north" resizable="true" size="100" minSize="40" maxSize="200">
-                            <h1>Biblioteca</h1>
+                    <p:graphicImage value="/img/banner.jpg" height="100" />
                 </p:layoutUnit>
 
 
@@ -22,7 +22,7 @@
                 <p:layoutUnit position="west" resizable="true" size="240" minSize="40" maxSize="250">
                     <h:form>
 
-                        <p:panelMenu style="width:300px" >
+                        <p:panelMenu style="width:300px; height: 100%" >
 
                             <p:submenu label="Cadastros" icon="ui-icon-refresh">
                                 <p:menuitem value="Título" outcome="titulos"></p:menuitem>
@@ -32,7 +32,9 @@
                             </p:submenu>
 
                             <p:submenu label="Empréstimos" icon="ui-icon-newwin">
-
+                                <p:menuitem value="Novo" outcome="empNovo"></p:menuitem>
+                                <p:menuitem value="Baixa" outcome="empBaixa"></p:menuitem>
+                                <p:menuitem value="Relatórios" outcome="empRel"></p:menuitem>
                             </p:submenu>
 
                         </p:panelMenu>      

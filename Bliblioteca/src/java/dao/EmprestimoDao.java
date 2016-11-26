@@ -1,11 +1,11 @@
 package dao;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
-import model.Exemplar;
+import model.Emprestimo;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -13,9 +13,9 @@ import util.HibernateUtil;
 
 @ManagedBean
 @ApplicationScoped
-public class ExemplarDao implements Serializable {
+public class EmprestimoDao implements Serializable {
     
-    public List<Exemplar> listaTodos() {
+    public List<Emprestimo> listaTodos() {
         
         List lista = null;
         
@@ -24,7 +24,7 @@ public class ExemplarDao implements Serializable {
         
         try {
             t = session.beginTransaction();
-            lista = session.createQuery("from Exemplar").list();
+            lista = session.createQuery("from Emprestimo").list();
             t.commit();
         } catch (Exception e) {
             if (t != null) t.rollback();
@@ -37,50 +37,32 @@ public class ExemplarDao implements Serializable {
     }
     
     
-    public void cadastra(Exemplar exemplar) {
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        Transaction t = null;
- 
-        try {
-            t = session.beginTransaction();
-            session.persist(exemplar);
-            t.commit();
-        } catch (Exception e) {
-            if (t != null) t.rollback();
-            throw e;
-        } finally {
-            session.close();
-        }
-        
-    }
-    
-    public List<Exemplar> listaPorCodigo(Integer codigo) {
-        
-        List lista = new ArrayList<>();
+    public boolean cadastra(List<Emprestimo> listamprestimos) {
+        boolean status = false;
         
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction t = null;
         
         try {
             t = session.beginTransaction();
-            Exemplar exemplar = (Exemplar) session.get(Exemplar.class, codigo);
-            //Pessoa p = (Pessoa) session.get(Pessoa.class, codigo);
             
-            if (exemplar != null)
-                lista.add(exemplar);
-            
-            t.commit();
-        } catch (Exception e) {
-            if (t != null) t.rollback();
-            throw e;
-        } finally {
-            session.close();
-        }
+            for (Emprestimo e : listamprestimos) 
                 
-        return lista;
+                session.persist(e);
+            t.commit();
+            status = true;
+        } catch (Exception e) {
+            status = false;
+            if (t != null) t.rollback();
+            throw e;
+        } finally {
+            session.close();
+            
+        }
+        return status;
     }
     
-    public List<Exemplar> listaExemPorTitulo(String tituloPesquisa) {
+    public List<Emprestimo> listaEmpPorData(Date dtInicial, Date dtFinal) {
         
         List lista = null;
         
@@ -89,9 +71,9 @@ public class ExemplarDao implements Serializable {
         
         try {
             t = session.beginTransaction();
-            Query query = session.createQuery("from Exemplar where titulo.titulo like :t");
-            query.setParameter("t", String.format("%%%s%%", tituloPesquisa));
-            lista = query.list();
+            Query query = session.createQuery("from Emprestimo where dataemp :dtIniial and :dtFinal");
+            query.setParameter("dtIniial", String.format("%s", dtInicial));
+            query.setParameter("dtFinal", String.format("%s", dtFinal));
             t.commit();
         } catch (Exception e) {
             if (t != null) t.rollback();
@@ -102,5 +84,8 @@ public class ExemplarDao implements Serializable {
                 
         return lista;
     }
+    
+    
+        
     
 }

@@ -1,0 +1,214 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:decorate template="template.xhtml">
+        <ui:define name="centro">
+            <h:form>
+                <h2>Novo Empréstimo</h2>   
+                <p:tabView activeIndex="#{emprestimoController.tabAtiva}">
+
+
+
+                    <p:tab title="Usuário">
+                        <h3>Selecione um usuário</h3>
+                        <p:messages id="msgUsuario" showDetail="true" autoUpdate="true" closable="false" />
+
+
+
+
+                        <h:panelGrid id="gUsuario" columns="2">
+
+                            <p:outputLabel for="idPesq" value="Código:"/>
+                            <p:inputText id="idPesq" value="#{emprestimoController.idUsuPesq}"/>
+
+                            <p:outputLabel for="usuarioPesq" value="Nome:"/>
+                            <p:inputText id="usuarioPesq" value="#{emprestimoController.usuPesq}"/>
+
+                            <p:outputLabel for="emailPesq" value="E-mail:"/>
+                            <p:inputText id="emailPesq" value="#{emprestimoController.emailPesq}"/>
+
+                            <f:facet name="footer">
+                                <p:commandButton value="Pesquisar"
+                                                 process="gUsuario"
+                                                 update="msgUsuario tabUsuario"
+                                                 action="#{emprestimoController.pesquisaUsuario()}"/>
+                            </f:facet>
+
+                        </h:panelGrid>
+
+                        <p:dataTable id="tabUsuario" 
+                                     value="#{emprestimoController.listaUsuarios}" 
+                                     var="usuario">
+                            <p:column headerText="Id">
+                                <p:outputLabel value="#{usuario.id}"/>
+                            </p:column>
+
+                            <p:column headerText="Nome">
+                                <p:outputLabel value="#{usuario.nome}"/>
+                            </p:column>
+
+                            <p:column headerText="E-mail">
+                                <p:outputLabel value="#{usuario.email}"/>
+                            </p:column>
+
+                            <p:column headerText="Selecionar">
+                                <p:commandButton 
+                                    title="Selecionar" 
+                                    icon="ui-icon-check"
+                                    update="@form"
+                                    process="tabUsuario"
+                                    action="#{emprestimoController.pag1()}">
+                                    <f:setPropertyActionListener 
+                                        value="#{usuario}"
+                                        target="#{emprestimoController.usuario}" />
+                                </p:commandButton>
+                            </p:column>
+
+
+                        </p:dataTable>
+
+                    </p:tab> <!--Final usuario-->
+
+
+
+
+                    <p:tab title="Exemplar">
+
+                        <h3>Informe um exemplar</h3>
+                        <p:messages id="msgExemplar" showDetail="true" autoUpdate="true" closable="false" />
+
+
+                        <h:panelGrid style="align-content: center" id="gTitulo" columns="2">
+
+                            <p:outputLabel for="idTitPesq" value="Código:"/>
+                            <p:inputText id="idTitPesq" value="#{emprestimoController.idTitPesq}"/>
+
+                            <p:outputLabel for="tituloPes" value="Titulo:"/>
+                            <p:inputText id="tituloPes" value="#{emprestimoController.exePesq}"/>
+
+
+
+                            <f:facet name="footer">
+                                <p:commandButton value="Pesquisar"
+                                                 process="gTitulo"
+                                                 update="msgExemplar tabExemplar"
+                                                 action="#{emprestimoController.pesquisaExemplar()}"/>
+                            </f:facet>
+
+                        </h:panelGrid>
+
+                        <p:outputLabel style="text-align: center">Selecione os Exemplares!</p:outputLabel>
+
+
+
+                        <p:dataTable id="tabExemplar" 
+                                     value="#{emprestimoController.listaExemplares}" 
+                                     var="exemplar">
+
+                            <p:column headerText="Código" >
+                                <p:outputLabel value="#{exemplar.id}"/>
+                            </p:column>
+
+                            <p:column headerText="Título">
+                                <p:outputLabel value="#{exemplar.titulo.titulo}"/>
+                            </p:column>
+
+
+
+                            <p:column headerText="Selecionar">
+                                <p:commandButton 
+                                    title="Selecionar" 
+                                    icon="ui-icon-check"                                   
+                                    update="@form"                                    
+                                    process="tabExemplar"
+                                    action="#{emprestimoController.adicionaExempar()}">
+                                    <f:setPropertyActionListener 
+                                        value="#{exemplar}"
+                                        target="#{emprestimoController.exemSelecionado}"/>
+                                </p:commandButton>
+                            </p:column>
+                        </p:dataTable>
+                    </p:tab>
+
+
+
+
+                    <p:tab title="Emprestimo">
+                        <p:panel style="width: 90%; align-content: center" >
+
+                            <p:outputLabel value="Empréstimo"/>
+                            <p:messages id="msgEmprestimo" showDetail="true" autoUpdate="true" closable="false" />
+
+                            <h:panelGrid id="gEmprestimo" columns="4">
+
+                                <p:outputLabel for="usuario" value="Usuario:"/>
+                                <p:inputText id="usuario" value="#{emprestimoController.usuario.nome}"/>
+
+                                <p:outputLabel value=""/>
+
+                                <p:commandButton
+                                    value="Finalizar Emprestimo"
+                                    process="@this"
+                                    update="@form"
+                                    action="#{emprestimoController.finaliza()}"/>
+
+                            </h:panelGrid>
+
+
+
+
+
+                            <p:dataTable id="tabExemEmp"
+                                         var="emprestimo"
+                                         value="#{emprestimoController.listaEmprestimos}">
+
+                                <p:column headerText="Código" >
+                                    <p:outputLabel value="#{emprestimo.exemplar.id}"/>
+                                </p:column>
+
+                                <p:column headerText="Título">
+                                    <p:outputLabel value="#{emprestimo.exemplar.titulo.titulo}"/>
+                                </p:column>
+
+                                <p:column headerText="Remover">
+
+                                    <p:commandButton 
+                                        title="Remover" 
+                                        icon="ui-icon-trash"
+                                        update="@form" 
+                                        process="tabExemEmp"
+                                        action="#{emprestimoController.removerExemplar()}">
+                                        <p:confirm header="Remover registro"
+                                                   message="Deseja realmente remover o registro?"
+                                                   icon="ui-icon-alert" />
+                                        <f:setPropertyActionListener 
+                                            value="#{emprestimo}"
+                                            target="#{emprestimoController.emprestimoSelecionado}" />
+                                    </p:commandButton>
+                                </p:column>
+
+                            </p:dataTable>
+
+                            <p:confirmDialog global="true">
+                                <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </p:confirmDialog>
+
+
+                        </p:panel>
+                    </p:tab>
+
+                </p:tabView>
+
+            </h:form>
+        </ui:define>
+    </ui:decorate>
+
+
+
+</html>
+
